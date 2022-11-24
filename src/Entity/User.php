@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\EntityListeners(['App\EntityListener\UserListener'])]
 #[UniqueEntity('email',message:'L\'utilisateur existe déjà')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
