@@ -5,6 +5,7 @@
 
 {% block body %}
 	<div class="container">
+        <a href="{{path('recipe.index')}}" class="btn btn-secondary my-4">Retour</a>
 		{% if recipe is defined %}
 			<h1>Recette de "{{recipe.name}}"</h1>
 			<div class="row">

@@ -49,7 +49,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/recipe/editer/{id}', name: 'recipe.edit')]
-    public function edit(Recipe $recipe, ManagerRegistry $doctrine,Request $request)
+    public function edit(Recipe $recipe = null, ManagerRegistry $doctrine,Request $request)
     {
         if(!$recipe){
             $this->addFlash(type:'error',message:'Recette inconnu !');
@@ -73,7 +73,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/recipe/delete/{id}', name: 'recipe.delete')]
-    public function delete(Recipe $recipe, ManagerRegistry $doctrine)
+    public function delete(Recipe $recipe = null, ManagerRegistry $doctrine)
     {
         if(!$recipe){
             $this->addFlash(type:'error',message:'Recette inconnu !');
@@ -87,7 +87,7 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/recipe/{id}', name: 'recipe.show')]
-    public function show(Recipe $recipe)
+    public function show(Recipe $recipe = null)
     {
         if(!$recipe){
             $this->addFlash(type:'error',message:'Recette inconnu !');

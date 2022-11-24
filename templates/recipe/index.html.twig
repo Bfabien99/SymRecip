@@ -59,7 +59,7 @@ new bootstrap.Alert(alert)
 					{% for recipe in recipes %}
 						<tr class="table-info">
 							<th scope="row">{{recipe.id}}</th>
-							<td>{{recipe.name|upper}}</td>
+							<td><a href="{{path('recipe.show',{'id':recipe.id})}}">{{recipe.name|upper}}</a></td>
 							<td>{{recipe.price|number_format(2,'.',',')}}</td>
 							<td>{{recipe.createdAt|date('d/m/Y')}}</td>
 							<td>
