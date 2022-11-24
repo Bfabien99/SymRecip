@@ -42,7 +42,7 @@ class Recipe
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank()]
-    #[Assert\Length(min:20, max:300)]
+    #[Assert\Length(min:20, max:700)]
     private ?string $description = null;
 
     #[ORM\Column(nullable: true)]
@@ -61,7 +61,7 @@ class Recipe
     #[Assert\NotNull()]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToMany(targetEntity: ingredient::class)]
+    #[ORM\ManyToMany(targetEntity: Ingredient::class)]
     private Collection $ingredients;
 
     public function __construct()

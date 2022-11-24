@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymRecipe - Information recette
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		{% if recipe is defined %}
+			<h1>Recette de "{{recipe.name}}"</h1>
+			<div class="row">
+				<div class="col">
+                    <h4>Prix : {{recipe.price ?? 0}} €</h4>
+                    <hr>
+					<h4>Temps requis :
+						{{recipe.time ?? 10}}
+						min</h4>
+					<hr>
+					<h4>Ingredients</h4>
+					<table>
+						{% for ingredient in recipe.ingredients %}
+							<tr>
+								<td>{{ingredient}}</td>
+							</tr>
+						{% endfor %}
+					</table>
+                    <hr>
+                    <h4>Pour {{recipe.nbPeople ?? 1}} personne(s)</h4>
+				</div>
+				<div class="col">
+                    <h5>Difficulté niveau : {{recipe.difficulty ?? 1}}</h5>
+                    <hr>
+                    <h4>Description</h4>
+                    <p>
+                        {{recipe.description}}
+                    </p>
+                </div>
+			</div>
+
+		{% endif %}
+	</div>
+{% endblock %}

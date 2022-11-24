@@ -1,20 +1,113 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RecipeController!{% endblock %}
+{% block title %}SymRecipe - Recettes
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<div
+		class="container mt-4">
+		{# affiche un message flash #}
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success alert-dismissible fade show my-4" role="alert">
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				<strong>{{ message }}</strong>
+			</div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+			<script>
+				var alertList = document.querySelectorAll('.alert');
+alertList.forEach(function (alert) {
+new bootstrap.Alert(alert)
+})
+			</script>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/macbook/Desktop/codeSpace/devMuscleFormation/src/Controller/RecipeController.php'|file_link(0) }}">src/Controller/RecipeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/macbook/Desktop/codeSpace/devMuscleFormation/templates/recipe/index.html.twig'|file_link(0) }}">templates/recipe/index.html.twig</a></code></li>
-    </ul>
-</div>
+		{% endfor %}
+		{% for message in app.flashes('error') %}
+			<div class="alert alert-warning alert-dismissible fade show my-4" role="alert">
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				<strong>{{ message }}</strong>
+			</div>
+
+			<script>
+				var alertList = document.querySelectorAll('.alert');
+alertList.forEach(function (alert) {
+new bootstrap.Alert(alert)
+})
+			</script>
+
+		{% endfor %}
+		<h1>Mes recettes</h1>
+		<small class="text-muted">Total ingrédient:
+			{% if recipes is defined and recipes|length >0 %}
+				{{recipes.getTotalItemCOunt}}{% else %}0
+			{% endif %}
+		</small>
+		<br>
+		<a href="{{path('recipe.new')}}" class="btn btn-info">➕ Ajouter une recette</a>
+		<br>
+		{% if recipes is defined %}
+			<table class="table table-hover mt-4">
+				<thead>
+					<tr>
+						<th scope="col">Numéro</th>
+						<th scope="col">Nom</th>
+						<th scope="col">Prix (€)</th>
+						<th scope="col">Créé le</th>
+						<th scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for recipe in recipes %}
+						<tr class="table-info">
+							<th scope="row">{{recipe.id}}</th>
+							<td>{{recipe.name|upper}}</td>
+							<td>{{recipe.price|number_format(2,'.',',')}}</td>
+							<td>{{recipe.createdAt|date('d/m/Y')}}</td>
+							<td>
+								<a href="{{path('recipe.edit',{'id':recipe.id})}}" class="btn btn-info btn-sm">📝 Modi</a>
+								<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{recipe.id}}">♻️ Supp</button>
+							</td>
+						</tr>
+						<!-- Modal -->
+						<div class="modal fade" id="modal{{recipe.id}}" tabindex="-1" role="dialog" aria-labelledby="modalTitle{{recipe.id}}" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="modalTitle{{recipe.id}}">SUPPRESSION !</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<div class="container-fluid">
+											Voulez-vous vraiment supprimer la recette
+											<strong>{{recipe.name}}</strong>
+											?
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+										<a href="{{path('recipe.delete',{'id':recipe.id})}}" class="btn btn-danger">Supprimer</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<script>
+				var modalId = document.getElementById('modalId');
+
+modalId.addEventListener('show.bs.modal', function (event) { // Button that triggered the modal
+let button = event.relatedTarget;
+// Extract info from data-bs-* attributes
+let recipient = button.getAttribute('data-bs-whatever');
+
+// Use above variables to manipulate the DOM
+});
+			</script>
+
+			<div class="navigation d-flex justify-content-center mt-4">
+				{{ knp_pagination_render(recipes)}}
+			</div>
+		{% endif %}
+	</div>
 {% endblock %}

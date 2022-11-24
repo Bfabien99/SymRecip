@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymRecipe - Ajouter recette
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <a href="{{path('recipe.index')}}" class="btn btn-secondary">Retour</a>
+        <h1 class="mt-2">Création d'une recette</h1>
+        {{ form(form)}}
+    </div>
+    <script>
+        $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});</script>
+{% endblock %}
