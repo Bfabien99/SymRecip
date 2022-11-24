@@ -4,35 +4,110 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-4">
+	<div
+		class="container mt-4">
+		{# affiche un message flash #}
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success alert-dismissible fade show my-4" role="alert">
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				<strong>{{ message }}</strong>
+			</div>
+
+			<script>
+				var alertList = document.querySelectorAll('.alert');
+alertList.forEach(function (alert) {
+new bootstrap.Alert(alert)
+})
+			</script>
+
+		{% endfor %}
+		{% for message in app.flashes('error') %}
+			<div class="alert alert-warning alert-dismissible fade show my-4" role="alert">
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				<strong>{{ message }}</strong>
+			</div>
+
+			<script>
+				var alertList = document.querySelectorAll('.alert');
+alertList.forEach(function (alert) {
+new bootstrap.Alert(alert)
+})
+			</script>
+
+		{% endfor %}
 		<h1>Mes ingredients</h1>
-        <small class="text-muted">Total ingrédient: {% if ingredients is defined and ingredients|length >0 %}{{ingredients.getTotalItemCOunt}}{% else %}0{% endif %}</small>
-        <br>
-        <a href="{{path('ingredient.new')}}" class="btn btn-success">➕ Ajouter</a>
+		<small class="text-muted">Total ingrédient:
+			{% if ingredients is defined and ingredients|length >0 %}
+				{{ingredients.getTotalItemCOunt}}{% else %}0
+			{% endif %}
+		</small>
+		<br>
+		<a href="{{path('ingredient.new')}}" class="btn btn-primary">➕ Ajouter un ingrédient</a>
+		<br>
 		{% if ingredients is defined %}
-        <table class="table table-hover mt-4">
-            <thead>
-                <tr>
-                    <th scope="col">Numéro</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Prix (€)</th>
-                    <th scope="col">Créé le</th>
-                </tr>
-            </thead>
-            <tbody>
-			{% for ingredient in ingredients %}
-                <tr class="table-primary">
-                    <th scope="row">{{ingredient.id}}</th>
-                    <td>{{ingredient.name|upper}}</td>
-                    <td>{{ingredient.price|number_format(2,'.',',')}}</td>
-                    <td>{{ingredient.createdAt|date('d/m/Y')}}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-        </table>
-        <div class="navigation d-flex justify-content-center mt-4">
-            {{ knp_pagination_render(ingredients)}}
-        </div>
+			<table class="table table-hover mt-4">
+				<thead>
+					<tr>
+						<th scope="col">Numéro</th>
+						<th scope="col">Nom</th>
+						<th scope="col">Prix (€)</th>
+						<th scope="col">Créé le</th>
+						<th scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for ingredient in ingredients %}
+						<tr class="table-primary">
+							<th scope="row">{{ingredient.id}}</th>
+							<td>{{ingredient.name|upper}}</td>
+							<td>{{ingredient.price|number_format(2,'.',',')}}</td>
+							<td>{{ingredient.createdAt|date('d/m/Y')}}</td>
+							<td>
+								<a href="{{path('ingredient.edit',{'id':ingredient.id})}}" class="btn btn-info btn-sm">📝 Modi</a>
+								<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal{{ingredient.id}}">♻️ Supp</button>
+							</td>
+						</tr>
+						<!-- Modal -->
+						<div class="modal fade" id="modal{{ingredient.id}}" tabindex="-1" role="dialog" aria-labelledby="modalTitle{{ingredient.id}}" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="modalTitle{{ingredient.id}}">SUPPRESSION !</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<div class="container-fluid">
+											Voulez-vous vraiment supprimer l'ingrédient
+											<strong>{{ingredient.name}}</strong>
+											?
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+										<a href="{{path('ingredient.delete',{'id':ingredient.id})}}" class="btn btn-danger">Supprimer</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<script>
+				var modalId = document.getElementById('modalId');
+
+modalId.addEventListener('show.bs.modal', function (event) { // Button that triggered the modal
+let button = event.relatedTarget;
+// Extract info from data-bs-* attributes
+let recipient = button.getAttribute('data-bs-whatever');
+
+// Use above variables to manipulate the DOM
+});
+			</script>
+
+			<div class="navigation d-flex justify-content-center mt-4">
+				{{ knp_pagination_render(ingredients)}}
+			</div>
 		{% endif %}
 	</div>
 {% endblock %}

@@ -22,21 +22,21 @@ class IngredientType extends AbstractType
                     'maxlength' => '50',
                 ],
                 'label' => 'Nom',
-                'constraints' => [
-                    new Assert\Length(['min' => 2, 'max' => 50]),
-                    new Assert\NotBlank()
-                ]
+                // 'constraints' => [
+                //     new Assert\Length(['min' => 2, 'max' => 50]),
+                //     new Assert\NotBlank()
+                // ]
             ])
             ->add('price', MoneyType::class,[
                 'attr' => [
-                    'min' => '1',
-                    'max' => '200',
+                    'min' => 1,
+                    'max' => 201,
                 ],
                 'label' => 'Prix',
-                'constraints' => [
-                    new Assert\Positive(),
-                    new Assert\LessThan(200)
-                ]
+                // 'constraints' => [
+                //     new Assert\Positive(),
+                //     new Assert\LessThan(201)
+                // ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Ajouter ingrédient',

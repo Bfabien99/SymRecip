@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
+#[UniqueEntity('name',message:'L\'ingredient existe déjà')]
 class Ingredient
 {
     #[ORM\Id]
@@ -22,7 +24,7 @@ class Ingredient
     #[ORM\Column]
     #[Assert\NotNull()]
     #[Assert\Positive()]
-    #[Assert\LessThan(200)]
+    #[Assert\LessThan(201)]
     private ?float $price = null;
 
     #[ORM\Column]
@@ -49,7 +51,7 @@ class Ingredient
 
     public function setName(string $name): self
     {
-        $this->name = $name;
+        $this->name = strtoupper($name);
 
         return $this;
     }
